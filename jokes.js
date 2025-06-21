@@ -1,50 +1,6 @@
 // Joke database with metadata
 export const jokes = [
     {
-        id: 5,
-        text: "3lach lfquih g3ma 3ziz 3lih chelada?....... 7yt fiha ikhtilat",
-        author: "System",
-        authorId: "system",
-        timestamp: Date.now(),
-        score: 0,
-        upvotes: 0,
-        downvotes: 0,
-        voters: new Set()
-    },
-    {
-        id: 6,
-        text: "ch7al ktbqa mra 3zeya f toilet?........................... 9 chhor",
-        author: "System",
-        authorId: "system",
-        timestamp: Date.now(),
-        score: 0,
-        upvotes: 0,
-        downvotes: 0,
-        voters: new Set()
-    },
-    {
-        id: 7,
-        text: "galek hada wa7ed chera stylo khder..... omcha teybo",
-        author: "System",
-        authorId: "system",
-        timestamp: Date.now(),
-        score: 0,
-        upvotes: 0,
-        downvotes: 0,
-        voters: new Set()
-    },
-    {
-        id: 8,
-        text: "chnu huwa dad dyal telmidat?......... huwa donttelmidat",
-        author: "System",
-        authorId: "system",
-        timestamp: Date.now(),
-        score: 0,
-        upvotes: 0,
-        downvotes: 0,
-        voters: new Set()
-    },
-    {
         id: 9,
         text: "3lach yonan g3ma ki3rfo i3omo?........... 7yt ighriq",
         author: "System",
