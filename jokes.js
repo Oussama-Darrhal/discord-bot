@@ -1,6 +1,94 @@
 // Joke database with metadata
 export const jokes = [
     {
+        id: 1,
+        text: "galek hada wa7ed n3es m3a 8.... o 7waha",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set() // Track who voted to prevent spam
+    },
+    {
+        id: 2,
+        text: "3lach limona ktsena gedam bab jame3?........   katsena l3aser",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 3,
+        text: "3lach trya ktmchi toilet?....... 7yt fiha lbola",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 4,
+        text: "3lach tonobilat aydekhlo jahenam?.....   7yt fihom lkofer",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 5,
+        text: "3lach lfquih g3ma 3ziz 3lih chelada?....... 7yt fiha ikhtilat",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 6,
+        text: "ch7al ktbqa mra 3zeya f toilet?........................... 9 chhor",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 7,
+        text: "galek hada wa7ed chera stylo khder..... omcha teybo",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
+        id: 8,
+        text: "chnu huwa dad dyal telmidat?......... huwa donttelmidat",
+        author: "System",
+        authorId: "system",
+        timestamp: Date.now(),
+        score: 0,
+        upvotes: 0,
+        downvotes: 0,
+        voters: new Set()
+    },
+    {
         id: 9,
         text: "3lach yonan g3ma ki3rfo i3omo?........... 7yt ighriq",
         author: "System",
