@@ -9,5 +9,4 @@ export const jokes = [
     "galek hada wa7ed chera stylo khder..... omcha teybo",
     "chnu huwa dad dyal telmidat?......... huwa donttelmidat",
     "3lach yonan g3ma ki3rfo i3omo?........... 7yt ighriq"
-    
 ];
