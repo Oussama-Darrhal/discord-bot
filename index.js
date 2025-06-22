@@ -2,13 +2,16 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import { Client, GatewayIntentBits } from "discord.js";
 import crypto from "crypto";
-import { jokes, addJoke, updateJokeScore, jokeMessageMap } from "./jokes.js";
+import { getJokes, addJoke, updateJokeScore, jokeMessageMap } from "./jokes.js";
+import { musicCommands, initializePlayer } from "./music.js";
+import { connectToDatabase } from "./database.js";
 
 // Track recently shown jokes per user (last 3 jokes)
 const userRecentJokes = new Map();
 
 // Function to get weighted random joke based on score
-function getWeightedRandomJoke(userId) {
+async function getWeightedRandomJoke(userId) {
+    const jokes = await getJokes();
     let availableJokes = [...jokes];
 
     // Remove recently shown jokes for this user
@@ -89,11 +92,23 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildVoiceStates,
     ],
 });
 
-client.once("ready", () => {
+client.once("ready", async () => {
     console.log(`✅ Bot is online as ${client.user.tag}`);
+    
+    // Connect to MongoDB
+    try {
+        await connectToDatabase();
+    } catch (error) {
+        console.error('Failed to connect to database:', error);
+        process.exit(1);
+    }
+    
+    // Initialize the music player
+    initializePlayer(client);
 });
 
 client.on("messageCreate", async (message) => {
@@ -102,10 +117,10 @@ client.on("messageCreate", async (message) => {
 
     // Check if message starts with /nukta
     if (message.content.toLowerCase().startsWith("/nukta")) {
-        const randomJoke = getWeightedRandomJoke(message.author.id);
-        const formattedJoke = formatJoke(randomJoke);
-
         try {
+            const randomJoke = await getWeightedRandomJoke(message.author.id);
+            const formattedJoke = formatJoke(randomJoke);
+
             const sentMessage = await message.reply(formattedJoke);
 
             // Store mapping for reaction handling
@@ -140,7 +155,7 @@ client.on("messageCreate", async (message) => {
         }
 
         try {
-            const newJoke = addJoke(jokeText, message.author.username, message.author.id);
+            const newJoke = await addJoke(jokeText, message.author.username, message.author.id);
             const confirmationMessage = await message.reply(`✅ **Joke submitted successfully!**\n`);
 
             // Store mapping for reaction handling
@@ -151,6 +166,37 @@ client.on("messageCreate", async (message) => {
             message.reply("❌ There was an error submitting your joke. Please try again.");
         }
         return;
+    }
+
+    // Music commands
+    if (message.content.toLowerCase().startsWith("$play ")) {
+        const songArgs = message.content.slice(6).trim().split(/ +/); // Remove "$play " and split
+        console.log('Play command args:', songArgs);
+        return musicCommands.play(message, songArgs);
+    }
+
+    if (message.content.toLowerCase().startsWith("$pause")) {
+        return musicCommands.pause(message);
+    }
+
+    if (message.content.toLowerCase().startsWith("$resume")) {
+        return musicCommands.resume(message);
+    }
+
+    if (message.content.toLowerCase().startsWith("$skip")) {
+        return musicCommands.skip(message);
+    }
+
+    if (message.content.toLowerCase().startsWith("$queue")) {
+        return musicCommands.queue(message);
+    }
+
+    if (message.content.toLowerCase().startsWith("$nowplaying")) {
+        return musicCommands.nowplaying(message);
+    }
+
+    if (message.content.toLowerCase().startsWith("$leave")) {
+        return musicCommands.leave(message);
     }
 
     // Existing response patterns
@@ -308,7 +354,7 @@ client.on("messageReactionAdd", async (reaction, user) => {
 
     if (emoji === '👍' || emoji === '👎') {
         const isUpvote = emoji === '👍';
-        const updatedJoke = updateJokeScore(jokeId, user.id, isUpvote);
+        const updatedJoke = await updateJokeScore(jokeId, user.id, isUpvote);
 
         if (updatedJoke) {
             try {
@@ -351,7 +397,7 @@ client.on("messageReactionRemove", async (reaction, user) => {
 
     if (emoji === '👍' || emoji === '👎') {
         const isUpvote = emoji === '👍';
-        const updatedJoke = updateJokeScore(jokeId, user.id, isUpvote);
+        const updatedJoke = await updateJokeScore(jokeId, user.id, isUpvote);
 
         if (updatedJoke) {
             try {
